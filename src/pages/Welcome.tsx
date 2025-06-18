@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -77,7 +76,7 @@ const Welcome = () => {
               <Button 
                 variant="outline" 
                 size="lg"
-                className="w-full border-white/30 text-white hover:bg-white/10 backdrop-blur-sm py-4 text-lg"
+                className="w-full border-blue-300 text-blue-200 hover:bg-blue-500 hover:text-white backdrop-blur-sm py-4 text-lg"
               >
                 Sign In
               </Button>
