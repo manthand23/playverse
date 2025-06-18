@@ -6,9 +6,9 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Plus, X, Lightbulb, Users, Clock, MapPin } from 'lucide-react';
+import { Plus, Lightbulb, Users, MapPin } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import EquipmentSelector from './EquipmentSelector';
 
 interface CreateGameModalProps {
   isOpen: boolean;
@@ -21,23 +21,9 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
   const [description, setDescription] = useState('');
   const [rules, setRules] = useState('');
   const [players, setPlayers] = useState('');
-  const [duration, setDuration] = useState('');
   const [gameType, setGameType] = useState('');
   const [difficulty, setDifficulty] = useState('');
   const [selectedEquipment, setSelectedEquipment] = useState<string[]>([]);
-
-  const equipmentOptions = [
-    'Soccer Ball', 'Basketball', 'Ball', 'Cones', 'Skipping Rope', 
-    'Frisbee', 'Bat', 'Racket', 'None'
-  ];
-
-  const toggleEquipment = (equipment: string) => {
-    setSelectedEquipment(prev => 
-      prev.includes(equipment) 
-        ? prev.filter(item => item !== equipment)
-        : [...prev, equipment]
-    );
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,7 +48,6 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
     setDescription('');
     setRules('');
     setPlayers('');
-    setDuration('');
     setGameType('');
     setDifficulty('');
     setSelectedEquipment([]);
@@ -123,7 +108,7 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
           </div>
 
           {/* Game Details Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label className="text-sm font-medium flex items-center space-x-1">
                 <Users className="w-4 h-4 text-blue-500" />
@@ -133,19 +118,6 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
                 value={players}
                 onChange={(e) => setPlayers(e.target.value)}
                 placeholder="e.g., 2-6, 4v4"
-                className="border-orange-200 focus:border-orange-400"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label className="text-sm font-medium flex items-center space-x-1">
-                <Clock className="w-4 h-4 text-green-500" />
-                <span>Duration</span>
-              </Label>
-              <Input
-                value={duration}
-                onChange={(e) => setDuration(e.target.value)}
-                placeholder="e.g., 15 min, 30 min"
                 className="border-orange-200 focus:border-orange-400"
               />
             </div>
@@ -185,44 +157,10 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
           {/* Equipment Selection */}
           <div className="space-y-3">
             <Label className="text-sm font-medium">Required Equipment</Label>
-            <div className="flex flex-wrap gap-2">
-              {equipmentOptions.map(equipment => (
-                <Button
-                  key={equipment}
-                  type="button"
-                  variant={selectedEquipment.includes(equipment) ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => toggleEquipment(equipment)}
-                  className={`transition-all duration-200 ${
-                    selectedEquipment.includes(equipment)
-                      ? 'bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white border-0'
-                      : 'hover:border-green-300 hover:bg-green-50'
-                  }`}
-                >
-                  {equipment}
-                </Button>
-              ))}
-            </div>
-            {selectedEquipment.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-2">
-                {selectedEquipment.map(item => (
-                  <Badge 
-                    key={item} 
-                    variant="secondary"
-                    className="bg-gradient-to-r from-green-100 to-blue-100 text-green-800 border border-green-200"
-                  >
-                    {item}
-                    <button
-                      type="button"
-                      onClick={() => toggleEquipment(item)}
-                      className="ml-2 hover:text-red-600"
-                    >
-                      <X className="w-3 h-3" />
-                    </button>
-                  </Badge>
-                ))}
-              </div>
-            )}
+            <EquipmentSelector 
+              onEquipmentChange={setSelectedEquipment}
+              selectedEquipment={selectedEquipment}
+            />
           </div>
 
           {/* Submit Button */}

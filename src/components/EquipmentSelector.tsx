@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -22,7 +21,11 @@ const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
     { name: 'Volleyball', emoji: '🏐', category: 'Balls' },
     { name: 'Rugby Ball', emoji: '🏈', category: 'Balls' },
     { name: 'Ping Pong Ball', emoji: '🏓', category: 'Balls' },
-    { name: 'Any Ball', emoji: '⭕', category: 'Balls' },
+    { name: 'Football', emoji: '🏈', category: 'Balls' },
+    { name: 'Cricket Ball', emoji: '🏏', category: 'Balls' },
+    { name: 'Golf Ball', emoji: '⛳', category: 'Balls' },
+    { name: 'Beach Ball', emoji: '🏖️', category: 'Balls' },
+    { name: 'Other Ball', emoji: '⭕', category: 'Balls' },
     
     // Rackets & Sticks
     { name: 'Tennis Racket', emoji: '🎾', category: 'Rackets' },
@@ -32,39 +35,26 @@ const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
     { name: 'Hockey Stick', emoji: '🏒', category: 'Rackets' },
     { name: 'Cricket Bat', emoji: '🏏', category: 'Rackets' },
     
-    // Goals & Targets
-    { name: 'Basketball Hoop', emoji: '🏀', category: 'Goals' },
-    { name: 'Soccer Goal', emoji: '🥅', category: 'Goals' },
-    { name: 'Bowling Pins', emoji: '🎳', category: 'Goals' },
-    { name: 'Dartboard', emoji: '🎯', category: 'Goals' },
-    { name: 'Target', emoji: '🎪', category: 'Goals' },
-    
-    // Nets & Barriers
+    // Nets
     { name: 'Volleyball Net', emoji: '🏐', category: 'Nets' },
     { name: 'Tennis Net', emoji: '🎾', category: 'Nets' },
     { name: 'Badminton Net', emoji: '🏸', category: 'Nets' },
     { name: 'Basketball Net', emoji: '🏀', category: 'Nets' },
-    { name: 'Any Net', emoji: '🕸️', category: 'Nets' },
+    { name: 'Soccer Net', emoji: '⚽', category: 'Nets' },
     
     // Training & Fitness
     { name: 'Skipping Rope', emoji: '🪢', category: 'Training' },
     { name: 'Hula Hoop', emoji: '⭕', category: 'Training' },
-    { name: 'Resistance Bands', emoji: '🔗', category: 'Training' },
-    { name: 'Dumbbells', emoji: '🏋️', category: 'Training' },
     { name: 'Stopwatch', emoji: '⏱️', category: 'Training' },
     
-    // Setup & Markers
-    { name: 'Cones', emoji: '🚧', category: 'Setup' },
-    { name: 'Flags', emoji: '🚩', category: 'Setup' },
-    { name: 'Chalk', emoji: '✏️', category: 'Setup' },
-    { name: 'Rope', emoji: '🪢', category: 'Setup' },
-    { name: 'Markers', emoji: '📍', category: 'Setup' },
+    // Markers
+    { name: 'Cones', emoji: '🚧', category: 'Markers' },
+    { name: 'Flags', emoji: '🚩', category: 'Markers' },
+    { name: 'Chalk', emoji: '✏️', category: 'Markers' },
     
-    // Fun & Games
-    { name: 'Frisbee', emoji: '🥏', category: 'Fun' },
-    { name: 'Water Balloons', emoji: '🎈', category: 'Fun' },
-    { name: 'Bean Bags', emoji: '👜', category: 'Fun' },
-    { name: 'Balloons', emoji: '🎈', category: 'Fun' },
+    // Other
+    { name: 'Frisbee', emoji: '🥏', category: 'Other' },
+    { name: 'Bean Bags', emoji: '👜', category: 'Other' },
     
     // No Equipment
     { name: 'No Equipment', emoji: '🤸', category: 'None' }
@@ -80,18 +70,17 @@ const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
   const categories = [
     { id: 'Balls', name: 'Balls', icon: '⚽' },
     { id: 'Rackets', name: 'Rackets & Sticks', icon: '🎾' },
-    { id: 'Goals', name: 'Goals & Targets', icon: '🥅' },
     { id: 'Nets', name: 'Nets', icon: '🕸️' },
     { id: 'Training', name: 'Training', icon: '🏋️' },
-    { id: 'Setup', name: 'Setup', icon: '🚧' },
-    { id: 'Fun', name: 'Fun', icon: '🥏' },
+    { id: 'Markers', name: 'Markers', icon: '🚧' },
+    { id: 'Other', name: 'Other', icon: '🥏' },
     { id: 'None', name: 'None', icon: '🤸' }
   ];
 
   return (
     <div className="space-y-4">
       <Tabs defaultValue="Balls" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 h-auto p-1 bg-gray-100">
+        <TabsList className="grid w-full grid-cols-4 lg:grid-cols-7 h-auto p-1 bg-gray-100">
           {categories.map(category => (
             <TabsTrigger 
               key={category.id} 

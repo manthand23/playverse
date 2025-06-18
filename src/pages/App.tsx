@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, Plus, Globe, Users, Trophy, MapPin, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -158,22 +157,18 @@ const AppPage = () => {
 
         {/* Quick Stats */}
         {selectedEquipment.length > 0 && (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <Card className="text-center p-4 bg-gradient-to-br from-blue-500 to-blue-600 text-white">
               <div className="text-2xl font-bold">{recommendations.length}</div>
               <div className="text-sm opacity-90">Games Found</div>
             </Card>
             <Card className="text-center p-4 bg-gradient-to-br from-green-500 to-green-600 text-white">
-              <div className="text-2xl font-bold">{new Set(recommendations.map(g => g.origin)).size}</div>
-              <div className="text-sm opacity-90">Countries</div>
-            </Card>
-            <Card className="text-center p-4 bg-gradient-to-br from-orange-500 to-orange-600 text-white">
-              <div className="text-2xl font-bold">{recommendations.filter(g => g.difficulty === "Easy").length}</div>
-              <div className="text-sm opacity-90">Easy Games</div>
+              <div className="text-2xl font-bold">{recommendations.filter(g => g.type === "Outdoor" || g.type === "Indoor/Outdoor").length}</div>
+              <div className="text-sm opacity-90">Outdoor</div>
             </Card>
             <Card className="text-center p-4 bg-gradient-to-br from-purple-500 to-purple-600 text-white">
-              <div className="text-2xl font-bold">{recommendations.filter(g => g.type === "Outdoor").length}</div>
-              <div className="text-sm opacity-90">Outdoor</div>
+              <div className="text-2xl font-bold">{recommendations.filter(g => g.type === "Indoor" || g.type === "Indoor/Outdoor").length}</div>
+              <div className="text-sm opacity-90">Indoor</div>
             </Card>
           </div>
         )}
