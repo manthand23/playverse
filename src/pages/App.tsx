@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Search, Plus, Globe, Users, Trophy, MapPin, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -95,8 +96,8 @@ const AppPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
       {/* Header */}
-      <header className="bg-white/90 backdrop-blur-md border-b border-purple-200/50 sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-3">
+      <header className="bg-white border-b border-purple-200 sticky top-0 z-40">
+        <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <Button 
@@ -131,18 +132,18 @@ const AppPage = () => {
       <div className="container mx-auto px-4 py-6 space-y-6">
         {/* Hero Section */}
         <div className="text-center space-y-3">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
             Discover Sports From Around The World
           </h2>
-          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
             Tell us what equipment you have, and we'll recommend amazing games from every corner of the globe
           </p>
         </div>
 
         {/* Equipment Selector */}
-        <Card className="border-2 border-orange-200 shadow-lg bg-white/80 backdrop-blur-sm">
+        <Card className="border-2 border-orange-200 shadow-lg bg-white">
           <CardHeader className="pb-4">
-            <CardTitle className="flex items-center space-x-2 text-lg md:text-xl">
+            <CardTitle className="flex items-center space-x-2 text-lg">
               <Search className="w-5 h-5 text-orange-600" />
               <span>What equipment do you have?</span>
             </CardTitle>
@@ -157,17 +158,17 @@ const AppPage = () => {
 
         {/* Quick Stats */}
         {selectedEquipment.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-3">
             <Card className="text-center p-4 bg-gradient-to-br from-blue-500 to-blue-600 text-white">
-              <div className="text-2xl font-bold">{recommendations.length}</div>
+              <div className="text-xl font-bold">{recommendations.length}</div>
               <div className="text-sm opacity-90">Games Found</div>
             </Card>
             <Card className="text-center p-4 bg-gradient-to-br from-green-500 to-green-600 text-white">
-              <div className="text-2xl font-bold">{recommendations.filter(g => g.type === "Outdoor" || g.type === "Indoor/Outdoor").length}</div>
+              <div className="text-xl font-bold">{recommendations.filter(g => g.type === "Outdoor" || g.type === "Indoor/Outdoor").length}</div>
               <div className="text-sm opacity-90">Outdoor</div>
             </Card>
             <Card className="text-center p-4 bg-gradient-to-br from-purple-500 to-purple-600 text-white">
-              <div className="text-2xl font-bold">{recommendations.filter(g => g.type === "Indoor" || g.type === "Indoor/Outdoor").length}</div>
+              <div className="text-xl font-bold">{recommendations.filter(g => g.type === "Indoor" || g.type === "Indoor/Outdoor").length}</div>
               <div className="text-sm opacity-90">Indoor</div>
             </Card>
           </div>
@@ -176,11 +177,11 @@ const AppPage = () => {
         {/* Game Recommendations */}
         {recommendations.length > 0 && (
           <div className="space-y-4">
-            <h3 className="text-xl md:text-2xl font-bold text-gray-900 flex items-center space-x-2">
+            <h3 className="text-xl font-bold text-gray-900 flex items-center space-x-2">
               <Globe className="w-6 h-6 text-blue-600" />
               <span>Recommended Games</span>
             </h3>
-            <div className="grid gap-4 md:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
               {recommendations.map((game) => (
                 <GameCard key={game.id} game={game} />
               ))}

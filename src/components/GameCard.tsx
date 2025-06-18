@@ -35,28 +35,16 @@ const GameCard: React.FC<GameCardProps> = ({ game }) => {
     }
   };
 
-  const getOriginFlag = (origin: string) => {
-    const flags: { [key: string]: string } = {
-      'India': '🇮🇳',
-      'Thailand/Malaysia': '🇹🇭',
-      'Modern Adaptation': '🌍',
-      'Training Evolution': '🥊',
-      'Commonwealth Nations': '🇬🇧'
-    };
-    return flags[origin] || '🌍';
-  };
-
   return (
     <>
-      <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-orange-200 bg-white/90 backdrop-blur-sm h-full flex flex-col">
+      <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-orange-200 bg-white h-full flex flex-col">
         <CardHeader className="pb-3 flex-shrink-0">
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <CardTitle className="text-lg font-bold text-gray-900 group-hover:text-orange-600 transition-colors leading-tight">
                 {game.name}
               </CardTitle>
-              <div className="flex items-center space-x-1 mt-1">
-                <span>{getOriginFlag(game.origin)}</span>
+              <div className="mt-1">
                 <span className="text-sm text-gray-600">{game.origin}</span>
               </div>
             </div>

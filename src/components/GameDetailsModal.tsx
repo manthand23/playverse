@@ -34,17 +34,6 @@ const GameDetailsModal: React.FC<GameDetailsModalProps> = ({ game, isOpen, onClo
     }
   };
 
-  const getOriginFlag = (origin: string) => {
-    const flags: { [key: string]: string } = {
-      'India': '🇮🇳',
-      'Thailand/Malaysia': '🇹🇭',
-      'Modern Adaptation': '🌍',
-      'Training Evolution': '🥊',
-      'Commonwealth Nations': '🇬🇧'
-    };
-    return flags[origin] || '🌍';
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -53,7 +42,6 @@ const GameDetailsModal: React.FC<GameDetailsModalProps> = ({ game, isOpen, onClo
             {game.name}
           </DialogTitle>
           <div className="flex items-center space-x-2 mt-2">
-            <span className="text-2xl">{getOriginFlag(game.origin)}</span>
             <span className="text-lg text-gray-600">{game.origin}</span>
             <Badge className={getDifficultyColor(game.difficulty)}>
               {game.difficulty}

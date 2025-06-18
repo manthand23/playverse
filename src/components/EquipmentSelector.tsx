@@ -14,49 +14,49 @@ const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
 }) => {
   const equipmentOptions = [
     // Balls
-    { name: 'Soccer Ball', emoji: '⚽', category: 'Balls' },
-    { name: 'Basketball', emoji: '🏀', category: 'Balls' },
-    { name: 'Tennis Ball', emoji: '🎾', category: 'Balls' },
-    { name: 'Baseball', emoji: '⚾', category: 'Balls' },
-    { name: 'Volleyball', emoji: '🏐', category: 'Balls' },
-    { name: 'Rugby Ball', emoji: '🏈', category: 'Balls' },
-    { name: 'Ping Pong Ball', emoji: '🏓', category: 'Balls' },
-    { name: 'Football', emoji: '🏈', category: 'Balls' },
-    { name: 'Cricket Ball', emoji: '🏏', category: 'Balls' },
-    { name: 'Golf Ball', emoji: '⛳', category: 'Balls' },
-    { name: 'Beach Ball', emoji: '🏖️', category: 'Balls' },
-    { name: 'Other Ball', emoji: '⭕', category: 'Balls' },
+    { name: 'Soccer Ball', category: 'Balls' },
+    { name: 'Basketball', category: 'Balls' },
+    { name: 'Tennis Ball', category: 'Balls' },
+    { name: 'Baseball', category: 'Balls' },
+    { name: 'Volleyball', category: 'Balls' },
+    { name: 'Rugby Ball', category: 'Balls' },
+    { name: 'Ping Pong Ball', category: 'Balls' },
+    { name: 'Football', category: 'Balls' },
+    { name: 'Cricket Ball', category: 'Balls' },
+    { name: 'Golf Ball', category: 'Balls' },
+    { name: 'Beach Ball', category: 'Balls' },
+    { name: 'Other Ball', category: 'Balls' },
     
     // Rackets & Sticks
-    { name: 'Tennis Racket', emoji: '🎾', category: 'Rackets' },
-    { name: 'Badminton Racket', emoji: '🏸', category: 'Rackets' },
-    { name: 'Ping Pong Paddle', emoji: '🏓', category: 'Rackets' },
-    { name: 'Baseball Bat', emoji: '⚾', category: 'Rackets' },
-    { name: 'Hockey Stick', emoji: '🏒', category: 'Rackets' },
-    { name: 'Cricket Bat', emoji: '🏏', category: 'Rackets' },
+    { name: 'Tennis Racket', category: 'Rackets' },
+    { name: 'Badminton Racket', category: 'Rackets' },
+    { name: 'Ping Pong Paddle', category: 'Rackets' },
+    { name: 'Baseball Bat', category: 'Rackets' },
+    { name: 'Hockey Stick', category: 'Rackets' },
+    { name: 'Cricket Bat', category: 'Rackets' },
     
     // Nets
-    { name: 'Volleyball Net', emoji: '🏐', category: 'Nets' },
-    { name: 'Tennis Net', emoji: '🎾', category: 'Nets' },
-    { name: 'Badminton Net', emoji: '🏸', category: 'Nets' },
-    { name: 'Basketball Net', emoji: '🏀', category: 'Nets' },
-    { name: 'Soccer Net', emoji: '⚽', category: 'Nets' },
-    { name: 'Hockey Net', emoji: '🏒', category: 'Nets' },
+    { name: 'Volleyball Net', category: 'Nets' },
+    { name: 'Tennis Net', category: 'Nets' },
+    { name: 'Badminton Net', category: 'Nets' },
+    { name: 'Basketball Net', category: 'Nets' },
+    { name: 'Soccer Net', category: 'Nets' },
+    { name: 'Hockey Net', category: 'Nets' },
     
     // Markers
-    { name: 'Cones', emoji: '🚧', category: 'Markers' },
-    { name: 'Flags', emoji: '🚩', category: 'Markers' },
-    { name: 'Chalk', emoji: '✏️', category: 'Markers' },
+    { name: 'Cones', category: 'Markers' },
+    { name: 'Flags', category: 'Markers' },
+    { name: 'Chalk', category: 'Markers' },
     
     // Other
-    { name: 'Frisbee', emoji: '🥏', category: 'Other' },
-    { name: 'Bean Bags', emoji: '👜', category: 'Other' },
-    { name: 'Skipping Rope', emoji: '🪢', category: 'Other' },
-    { name: 'Hula Hoop', emoji: '⭕', category: 'Other' },
-    { name: 'Stopwatch', emoji: '⏱️', category: 'Other' },
+    { name: 'Frisbee', category: 'Other' },
+    { name: 'Bean Bags', category: 'Other' },
+    { name: 'Skipping Rope', category: 'Other' },
+    { name: 'Hula Hoop', category: 'Other' },
+    { name: 'Stopwatch', category: 'Other' },
     
     // No Equipment
-    { name: 'No Equipment', emoji: '🤸', category: 'None' }
+    { name: 'No Equipment', category: 'None' }
   ];
 
   const toggleEquipment = (equipment: string) => {
@@ -67,34 +67,32 @@ const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
   };
 
   const categories = [
-    { id: 'Balls', name: 'Balls', icon: '⚽' },
-    { id: 'Rackets', name: 'Rackets & Sticks', icon: '🎾' },
-    { id: 'Nets', name: 'Nets', icon: '🕸️' },
-    { id: 'Markers', name: 'Markers', icon: '🚧' },
-    { id: 'Other', name: 'Other', icon: '🥏' },
-    { id: 'None', name: 'None', icon: '🤸' }
+    { id: 'Balls', name: 'Balls' },
+    { id: 'Rackets', name: 'Rackets' },
+    { id: 'Nets', name: 'Nets' },
+    { id: 'Markers', name: 'Markers' },
+    { id: 'Other', name: 'Other' },
+    { id: 'None', name: 'None' }
   ];
 
   return (
     <div className="space-y-4">
       <Tabs defaultValue="Balls" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 h-auto p-1 bg-gray-100">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 h-auto p-1 bg-gray-100">
           {categories.map(category => (
             <TabsTrigger 
               key={category.id} 
               value={category.id}
-              className="flex flex-col items-center p-2 text-xs data-[state=active]:bg-orange-500 data-[state=active]:text-white"
+              className="flex items-center justify-center p-3 text-sm font-medium data-[state=active]:bg-orange-500 data-[state=active]:text-white"
             >
-              <span className="text-base mb-1">{category.icon}</span>
-              <span className="hidden sm:inline">{category.name}</span>
-              <span className="sm:hidden">{category.name.split(' ')[0]}</span>
+              {category.name}
             </TabsTrigger>
           ))}
         </TabsList>
 
         {categories.map(category => (
           <TabsContent key={category.id} value={category.id} className="mt-4">
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
               {equipmentOptions
                 .filter(item => item.category === category.id)
                 .map(equipment => (
@@ -103,14 +101,13 @@ const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
                     variant={selectedEquipment.includes(equipment.name) ? "default" : "outline"}
                     size="sm"
                     onClick={() => toggleEquipment(equipment.name)}
-                    className={`transition-all duration-200 h-auto py-3 px-2 flex flex-col items-center space-y-1 ${
+                    className={`transition-all duration-200 h-auto py-4 px-3 text-center ${
                       selectedEquipment.includes(equipment.name)
-                        ? 'bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0 shadow-lg'
+                        ? 'bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0'
                         : 'hover:border-orange-300 hover:bg-orange-50'
                     }`}
                   >
-                    <span className="text-lg">{equipment.emoji}</span>
-                    <span className="text-xs text-center leading-tight">{equipment.name}</span>
+                    <span className="text-sm font-medium">{equipment.name}</span>
                   </Button>
                 ))}
             </div>
@@ -138,7 +135,7 @@ const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
                 variant="secondary"
                 className="bg-gradient-to-r from-orange-100 to-red-100 text-orange-800 border border-orange-200 px-3 py-1"
               >
-                {equipmentOptions.find(eq => eq.name === item)?.emoji} {item}
+                {item}
               </Badge>
             ))}
           </div>
