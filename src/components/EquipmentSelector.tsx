@@ -41,11 +41,7 @@ const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
     { name: 'Badminton Net', emoji: '🏸', category: 'Nets' },
     { name: 'Basketball Net', emoji: '🏀', category: 'Nets' },
     { name: 'Soccer Net', emoji: '⚽', category: 'Nets' },
-    
-    // Training & Fitness
-    { name: 'Skipping Rope', emoji: '🪢', category: 'Training' },
-    { name: 'Hula Hoop', emoji: '⭕', category: 'Training' },
-    { name: 'Stopwatch', emoji: '⏱️', category: 'Training' },
+    { name: 'Hockey Net', emoji: '🏒', category: 'Nets' },
     
     // Markers
     { name: 'Cones', emoji: '🚧', category: 'Markers' },
@@ -55,6 +51,9 @@ const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
     // Other
     { name: 'Frisbee', emoji: '🥏', category: 'Other' },
     { name: 'Bean Bags', emoji: '👜', category: 'Other' },
+    { name: 'Skipping Rope', emoji: '🪢', category: 'Other' },
+    { name: 'Hula Hoop', emoji: '⭕', category: 'Other' },
+    { name: 'Stopwatch', emoji: '⏱️', category: 'Other' },
     
     // No Equipment
     { name: 'No Equipment', emoji: '🤸', category: 'None' }
@@ -71,7 +70,6 @@ const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
     { id: 'Balls', name: 'Balls', icon: '⚽' },
     { id: 'Rackets', name: 'Rackets & Sticks', icon: '🎾' },
     { id: 'Nets', name: 'Nets', icon: '🕸️' },
-    { id: 'Training', name: 'Training', icon: '🏋️' },
     { id: 'Markers', name: 'Markers', icon: '🚧' },
     { id: 'Other', name: 'Other', icon: '🥏' },
     { id: 'None', name: 'None', icon: '🤸' }
@@ -80,7 +78,7 @@ const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
   return (
     <div className="space-y-4">
       <Tabs defaultValue="Balls" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 lg:grid-cols-7 h-auto p-1 bg-gray-100">
+        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 h-auto p-1 bg-gray-100">
           {categories.map(category => (
             <TabsTrigger 
               key={category.id} 
