@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { MapPin, Users, Clock, Trophy, Info, Globe } from 'lucide-react';
+import { MapPin, Users, Trophy, Info } from 'lucide-react';
 import GameDetailsModal from './GameDetailsModal';
 
 interface Game {
@@ -13,7 +13,6 @@ interface Game {
   equipment: string[];
   players: string;
   difficulty: string;
-  duration: string;
   type: string;
   description: string;
   rules: string;
@@ -41,18 +40,19 @@ const GameCard: React.FC<GameCardProps> = ({ game }) => {
       'India': '🇮🇳',
       'Thailand/Malaysia': '🇹🇭',
       'Modern Adaptation': '🌍',
-      'Training Evolution': '🥊'
+      'Training Evolution': '🥊',
+      'Commonwealth Nations': '🇬🇧'
     };
     return flags[origin] || '🌍';
   };
 
   return (
     <>
-      <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-orange-200 bg-white/80 backdrop-blur-sm">
-        <CardHeader className="pb-3">
+      <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-orange-200 bg-white/90 backdrop-blur-sm h-full flex flex-col">
+        <CardHeader className="pb-3 flex-shrink-0">
           <div className="flex items-start justify-between">
-            <div>
-              <CardTitle className="text-lg font-bold text-gray-900 group-hover:text-orange-600 transition-colors">
+            <div className="flex-1">
+              <CardTitle className="text-lg font-bold text-gray-900 group-hover:text-orange-600 transition-colors leading-tight">
                 {game.name}
               </CardTitle>
               <div className="flex items-center space-x-1 mt-1">
@@ -66,31 +66,27 @@ const GameCard: React.FC<GameCardProps> = ({ game }) => {
           </div>
         </CardHeader>
         
-        <CardContent className="space-y-4">
-          <p className="text-gray-600 text-sm line-clamp-2">
+        <CardContent className="space-y-4 flex-1 flex flex-col">
+          <p className="text-gray-600 text-sm line-clamp-3 flex-1">
             {game.description}
           </p>
 
-          <div className="grid grid-cols-2 gap-3 text-sm">
+          <div className="grid grid-cols-1 gap-3 text-sm">
             <div className="flex items-center space-x-2">
-              <Users className="w-4 h-4 text-blue-500" />
-              <span className="text-gray-600">{game.players}</span>
+              <Users className="w-4 h-4 text-blue-500 flex-shrink-0" />
+              <span className="text-gray-600">{game.players} players</span>
             </div>
             <div className="flex items-center space-x-2">
-              <Clock className="w-4 h-4 text-green-500" />
-              <span className="text-gray-600">{game.duration}</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <MapPin className="w-4 h-4 text-orange-500" />
+              <MapPin className="w-4 h-4 text-orange-500 flex-shrink-0" />
               <span className="text-gray-600">{game.type}</span>
             </div>
             <div className="flex items-center space-x-2">
-              <Trophy className="w-4 h-4 text-purple-500" />
-              <span className="text-gray-600">{game.equipment.join(', ')}</span>
+              <Trophy className="w-4 h-4 text-purple-500 flex-shrink-0" />
+              <span className="text-gray-600 truncate">{game.equipment.join(', ')}</span>
             </div>
           </div>
 
-          <div className="pt-2 border-t">
+          <div className="pt-2 border-t mt-auto">
             <Button 
               onClick={() => setShowDetails(true)}
               className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"

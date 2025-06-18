@@ -3,7 +3,7 @@ import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { MapPin, Users, Clock, Trophy, Globe, BookOpen, Play } from 'lucide-react';
+import { MapPin, Users, Trophy, Globe, BookOpen, Play } from 'lucide-react';
 
 interface Game {
   id: number;
@@ -12,7 +12,6 @@ interface Game {
   equipment: string[];
   players: string;
   difficulty: string;
-  duration: string;
   type: string;
   description: string;
   rules: string;
@@ -40,7 +39,8 @@ const GameDetailsModal: React.FC<GameDetailsModalProps> = ({ game, isOpen, onClo
       'India': '🇮🇳',
       'Thailand/Malaysia': '🇹🇭',
       'Modern Adaptation': '🌍',
-      'Training Evolution': '🥊'
+      'Training Evolution': '🥊',
+      'Commonwealth Nations': '🇬🇧'
     };
     return flags[origin] || '🌍';
   };
@@ -63,16 +63,11 @@ const GameDetailsModal: React.FC<GameDetailsModalProps> = ({ game, isOpen, onClo
 
         <div className="space-y-6">
           {/* Quick Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div className="text-center p-3 bg-blue-50 rounded-lg">
               <Users className="w-6 h-6 text-blue-500 mx-auto mb-1" />
               <div className="text-sm font-medium text-blue-900">Players</div>
               <div className="text-sm text-blue-700">{game.players}</div>
-            </div>
-            <div className="text-center p-3 bg-green-50 rounded-lg">
-              <Clock className="w-6 h-6 text-green-500 mx-auto mb-1" />
-              <div className="text-sm font-medium text-green-900">Duration</div>
-              <div className="text-sm text-green-700">{game.duration}</div>
             </div>
             <div className="text-center p-3 bg-orange-50 rounded-lg">
               <MapPin className="w-6 h-6 text-orange-500 mx-auto mb-1" />
@@ -102,7 +97,7 @@ const GameDetailsModal: React.FC<GameDetailsModalProps> = ({ game, isOpen, onClo
               <span>How to Play</span>
             </h3>
             <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-              <p className="text-blue-900">{game.rules}</p>
+              <div className="text-blue-900 whitespace-pre-line leading-relaxed">{game.rules}</div>
             </div>
           </div>
 
@@ -113,7 +108,7 @@ const GameDetailsModal: React.FC<GameDetailsModalProps> = ({ game, isOpen, onClo
               <span>Cultural Background</span>
             </h3>
             <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-              <p className="text-green-900">{game.cultural}</p>
+              <p className="text-green-900 leading-relaxed">{game.cultural}</p>
             </div>
           </div>
 

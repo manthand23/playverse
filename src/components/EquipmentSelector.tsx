@@ -13,14 +13,51 @@ const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
   selectedEquipment
 }) => {
   const equipmentOptions = [
+    // Ball Sports
     { name: 'Soccer Ball', emoji: '⚽', category: 'Ball Sports' },
     { name: 'Basketball', emoji: '🏀', category: 'Ball Sports' },
+    { name: 'Tennis Ball', emoji: '🎾', category: 'Ball Sports' },
+    { name: 'Baseball', emoji: '⚾', category: 'Ball Sports' },
     { name: 'Ball', emoji: '🥎', category: 'Ball Sports' },
-    { name: 'Cones', emoji: '🚧', category: 'Markers' },
+    { name: 'Volleyball', emoji: '🏐', category: 'Ball Sports' },
+    
+    // Striking Equipment
+    { name: 'Baseball Bat', emoji: '⚾', category: 'Striking' },
+    { name: 'Tennis Racket', emoji: '🎾', category: 'Racquet' },
+    { name: 'Badminton Racket', emoji: '🏸', category: 'Racquet' },
+    { name: 'Ping Pong Paddle', emoji: '🏓', category: 'Racquet' },
+    { name: 'Hockey Stick', emoji: '🏒', category: 'Striking' },
+    
+    // Fitness & Training
     { name: 'Skipping Rope', emoji: '🪢', category: 'Fitness' },
+    { name: 'Dumbbells', emoji: '🏋️', category: 'Fitness' },
+    { name: 'Resistance Bands', emoji: '🔗', category: 'Fitness' },
+    { name: 'Hula Hoop', emoji: '⭕', category: 'Fitness' },
+    
+    // Targets & Goals
+    { name: 'Basketball Hoop', emoji: '🏀', category: 'Targets' },
+    { name: 'Soccer Goal', emoji: '🥅', category: 'Targets' },
+    { name: 'Bowling Pins', emoji: '🎳', category: 'Targets' },
+    { name: 'Dartboard', emoji: '🎯', category: 'Targets' },
+    
+    // Nets & Barriers
+    { name: 'Volleyball Net', emoji: '🏐', category: 'Nets' },
+    { name: 'Tennis Net', emoji: '🎾', category: 'Nets' },
+    { name: 'Badminton Net', emoji: '🏸', category: 'Nets' },
+    { name: 'Net', emoji: '🥅', category: 'Nets' },
+    
+    // Markers & Setup
+    { name: 'Cones', emoji: '🚧', category: 'Markers' },
+    { name: 'Flags', emoji: '🚩', category: 'Markers' },
+    { name: 'Chalk', emoji: '✏️', category: 'Markers' },
+    { name: 'Rope', emoji: '🪢', category: 'Markers' },
+    
+    // Throwing Sports
     { name: 'Frisbee', emoji: '🥏', category: 'Throwing' },
-    { name: 'Bat', emoji: '🏏', category: 'Striking' },
-    { name: 'Racket', emoji: '🏸', category: 'Racquet' },
+    { name: 'Javelin', emoji: '🏹', category: 'Throwing' },
+    { name: 'Shot Put', emoji: '⚪', category: 'Throwing' },
+    
+    // Bodyweight
     { name: 'None', emoji: '🤸', category: 'Bodyweight' }
   ];
 
@@ -37,10 +74,10 @@ const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
     <div className="space-y-6">
       {categories.map(category => (
         <div key={category} className="space-y-3">
-          <h4 className="font-semibold text-gray-700 text-sm uppercase tracking-wide">
+          <h4 className="font-semibold text-gray-700 text-sm uppercase tracking-wide border-b border-gray-200 pb-1">
             {category}
           </h4>
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
             {equipmentOptions
               .filter(item => item.category === category)
               .map(equipment => (
@@ -49,14 +86,14 @@ const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
                   variant={selectedEquipment.includes(equipment.name) ? "default" : "outline"}
                   size="sm"
                   onClick={() => toggleEquipment(equipment.name)}
-                  className={`transition-all duration-200 ${
+                  className={`transition-all duration-200 h-auto py-3 px-2 flex flex-col items-center space-y-1 ${
                     selectedEquipment.includes(equipment.name)
-                      ? 'bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0'
-                      : 'hover:border-orange-300 hover:bg-orange-50'
+                      ? 'bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0 shadow-lg scale-105'
+                      : 'hover:border-orange-300 hover:bg-orange-50 hover:scale-105'
                   }`}
                 >
-                  <span className="mr-2">{equipment.emoji}</span>
-                  {equipment.name}
+                  <span className="text-lg">{equipment.emoji}</span>
+                  <span className="text-xs text-center leading-tight">{equipment.name}</span>
                 </Button>
               ))}
           </div>
@@ -81,7 +118,7 @@ const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
               <Badge 
                 key={item} 
                 variant="secondary"
-                className="bg-gradient-to-r from-orange-100 to-red-100 text-orange-800 border border-orange-200"
+                className="bg-gradient-to-r from-orange-100 to-red-100 text-orange-800 border border-orange-200 px-3 py-1"
               >
                 {equipmentOptions.find(eq => eq.name === item)?.emoji} {item}
               </Badge>
