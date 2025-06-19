@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,12 +11,26 @@ import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import EquipmentSelector from './EquipmentSelector';
 
+interface Game {
+  id: number;
+  name: string;
+  origin: string;
+  equipment: string[];
+  players: string;
+  difficulty: string;
+  type: string;
+  description: string;
+  rules: string;
+  cultural: string;
+}
+
 interface CreateGameModalProps {
   isOpen: boolean;
   onClose: () => void;
+  editGame?: Game | null;
 }
 
-const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) => {
+const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose, editGame }) => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [gameName, setGameName] = useState('');
@@ -26,6 +40,28 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
   const [gameType, setGameType] = useState('');
   const [difficulty, setDifficulty] = useState('');
   const [selectedEquipment, setSelectedEquipment] = useState<string[]>([]);
+
+  // Populate form when editing
+  useEffect(() => {
+    if (editGame) {
+      setGameName(editGame.name);
+      setDescription(editGame.description);
+      setRules(editGame.rules);
+      setPlayers(editGame.players);
+      setGameType(editGame.type);
+      setDifficulty(editGame.difficulty);
+      setSelectedEquipment(editGame.equipment);
+    } else {
+      // Reset form for new game
+      setGameName('');
+      setDescription('');
+      setRules('');
+      setPlayers('');
+      setGameType('');
+      setDifficulty('');
+      setSelectedEquipment([]);
+    }
+  }, [editGame, isOpen]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,9 +75,8 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
       return;
     }
 
-    // Create the new game object
-    const newGame = {
-      id: Date.now(),
+    const gameData = {
+      id: editGame ? editGame.id : Date.now(),
       name: gameName,
       origin: "Custom Game",
       equipment: selectedEquipment.length > 0 ? selectedEquipment : ["None"],
@@ -50,18 +85,34 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
       type: gameType || "Indoor/Outdoor",
       description: description,
       rules: rules,
-      cultural: `This is a custom sport/game created by you! Share it with friends and family to spread the fun. Created on ${new Date().toLocaleDateString()}.`
+      cultural: editGame 
+        ? editGame.cultural 
+        : `This is a custom sport/game created by you! Share it with friends and family to spread the fun. Created on ${new Date().toLocaleDateString()}.`
     };
 
-    // Save to localStorage
     const existingGames = JSON.parse(localStorage.getItem('myGames') || '[]');
-    const updatedGames = [...existingGames, newGame];
-    localStorage.setItem('myGames', JSON.stringify(updatedGames));
-
-    toast({
-      title: "Sport/Game Created!",
-      description: `${gameName} has been added to your games`,
-    });
+    
+    if (editGame) {
+      // Update existing game
+      const updatedGames = existingGames.map((game: Game) => 
+        game.id === editGame.id ? gameData : game
+      );
+      localStorage.setItem('myGames', JSON.stringify(updatedGames));
+      
+      toast({
+        title: "Sport/Game Updated!",
+        description: `${gameName} has been updated successfully`,
+      });
+    } else {
+      // Create new game
+      const updatedGames = [...existingGames, gameData];
+      localStorage.setItem('myGames', JSON.stringify(updatedGames));
+      
+      toast({
+        title: "Sport/Game Created!",
+        description: `${gameName} has been added to your games`,
+      });
+    }
 
     // Reset form
     setGameName('');
@@ -83,7 +134,7 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent flex items-center space-x-2">
             <Lightbulb className="w-6 h-6 text-yellow-500" />
-            <span>Create Your Own Sport/Game</span>
+            <span>{editGame ? 'Edit Your Sport/Game' : 'Create Your Own Sport/Game'}</span>
           </DialogTitle>
         </DialogHeader>
 
@@ -193,7 +244,7 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
               className="flex-1 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Create Sport/Game
+              {editGame ? 'Update Sport/Game' : 'Create Sport/Game'}
             </Button>
             <Button 
               type="button"

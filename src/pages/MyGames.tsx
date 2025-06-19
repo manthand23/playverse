@@ -1,15 +1,19 @@
 
-import React from 'react';
-import { ArrowLeft, Plus, Trophy, Search, Trash2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowLeft, Plus, Trophy, Search, MoreHorizontal, Edit, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import GameCard from '@/components/GameCard';
+import CreateGameModal from '@/components/CreateGameModal';
 
 const MyGames = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [editingGame, setEditingGame] = useState(null);
   
   // Get games from localStorage (this is where created games will be stored)
   const getMyGames = () => {
@@ -29,6 +33,16 @@ const MyGames = () => {
     
     // Force re-render by navigating to same route
     window.location.reload();
+  };
+
+  const editGame = (game: any) => {
+    setEditingGame(game);
+    setShowCreateModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowCreateModal(false);
+    setEditingGame(null);
   };
 
   const myGames = getMyGames();
@@ -57,7 +71,7 @@ const MyGames = () => {
               </div>
             </div>
             <Button 
-              onClick={() => navigate('/app')}
+              onClick={() => setShowCreateModal(true)}
               size="sm"
               className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
             >
@@ -84,14 +98,30 @@ const MyGames = () => {
               {myGames.map((game: any) => (
                 <div key={game.id} className="relative">
                   <GameCard game={game} />
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    className="absolute top-2 right-2 z-10"
-                    onClick={() => deleteGame(game.id)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="absolute top-2 right-2 z-10 h-8 w-8 p-0 bg-white/80 hover:bg-white shadow-sm"
+                      >
+                        <MoreHorizontal className="w-4 h-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => editGame(game)}>
+                        <Edit className="w-4 h-4 mr-2" />
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        onClick={() => deleteGame(game.id)}
+                        className="text-red-600 focus:text-red-600"
+                      >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               ))}
             </div>
@@ -109,7 +139,7 @@ const MyGames = () => {
                 Create your first sport or game to see it here
               </p>
               <Button 
-                onClick={() => navigate('/app')}
+                onClick={() => setShowCreateModal(true)}
                 className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
               >
                 <Plus className="w-4 h-4 mr-2" />
@@ -119,6 +149,12 @@ const MyGames = () => {
           </Card>
         )}
       </div>
+
+      <CreateGameModal 
+        isOpen={showCreateModal}
+        onClose={handleCloseModal}
+        editGame={editingGame}
+      />
     </div>
   );
 };

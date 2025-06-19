@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Trophy, Plus, Globe, Users, MapPin, Sparkles, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -111,7 +112,7 @@ const AppPage = () => {
                 <Globe className="w-5 h-5 text-white" />
               </div>
               <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-                Discover Sports/Games From Around The World
+                Playverse
               </h1>
             </div>
             <div className="flex items-center space-x-2">
@@ -176,10 +177,10 @@ const AppPage = () => {
               <>
                 <div className="text-center space-y-2">
                   <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-                    Perfect Matches Found!
+                    Matches Found!
                   </h2>
                   <p className="text-base md:text-lg text-gray-600">
-                    {filteredSports.length} sport{filteredSports.length !== 1 ? 's' : ''} you can play with your equipment
+                    {filteredSports.length} sport/game{filteredSports.length !== 1 ? 's' : ''} you can play with your equipment
                   </p>
                 </div>
 
