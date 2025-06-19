@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, Lightbulb, Users, MapPin } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 import EquipmentSelector from './EquipmentSelector';
 
 interface CreateGameModalProps {
@@ -17,6 +18,7 @@ interface CreateGameModalProps {
 
 const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [gameName, setGameName] = useState('');
   const [description, setDescription] = useState('');
   const [rules, setRules] = useState('');
@@ -37,10 +39,28 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
       return;
     }
 
-    // Simulate game creation
+    // Create the new game object
+    const newGame = {
+      id: Date.now(),
+      name: gameName,
+      origin: "Custom Game",
+      equipment: selectedEquipment.length > 0 ? selectedEquipment : ["None"],
+      players: players || "Variable",
+      difficulty: difficulty || "Medium",
+      type: gameType || "Indoor/Outdoor",
+      description: description,
+      rules: rules,
+      cultural: `This is a custom sport/game created by you! Share it with friends and family to spread the fun. Created on ${new Date().toLocaleDateString()}.`
+    };
+
+    // Save to localStorage
+    const existingGames = JSON.parse(localStorage.getItem('myGames') || '[]');
+    const updatedGames = [...existingGames, newGame];
+    localStorage.setItem('myGames', JSON.stringify(updatedGames));
+
     toast({
-      title: "Game Created! 🎉",
-      description: `${gameName} has been added to the community library`,
+      title: "Sport/Game Created!",
+      description: `${gameName} has been added to your games`,
     });
 
     // Reset form
@@ -52,6 +72,9 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
     setDifficulty('');
     setSelectedEquipment([]);
     onClose();
+
+    // Navigate to My Games page
+    navigate('/my-games');
   };
 
   return (
@@ -60,7 +83,7 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent flex items-center space-x-2">
             <Lightbulb className="w-6 h-6 text-yellow-500" />
-            <span>Create Your Own Game</span>
+            <span>Create Your Own Sport/Game</span>
           </DialogTitle>
         </DialogHeader>
 
@@ -68,13 +91,13 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
           {/* Game Name */}
           <div className="space-y-2">
             <Label htmlFor="gameName" className="text-sm font-medium">
-              Game Name *
+              Sport/Game Name *
             </Label>
             <Input
               id="gameName"
               value={gameName}
               onChange={(e) => setGameName(e.target.value)}
-              placeholder="Enter your game's name"
+              placeholder="Enter your sport/game's name"
               className="border-orange-200 focus:border-orange-400"
             />
           </div>
@@ -88,7 +111,7 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Describe your game in an exciting way"
+              placeholder="Describe your sport/game in an exciting way"
               className="border-orange-200 focus:border-orange-400 min-h-[80px]"
             />
           </div>
@@ -102,7 +125,7 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
               id="rules"
               value={rules}
               onChange={(e) => setRules(e.target.value)}
-              placeholder="Explain how to play your game step by step"
+              placeholder="Explain how to play your sport/game step by step"
               className="border-orange-200 focus:border-orange-400 min-h-[100px]"
             />
           </div>
@@ -125,7 +148,7 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
             <div className="space-y-2">
               <Label className="text-sm font-medium flex items-center space-x-1">
                 <MapPin className="w-4 h-4 text-orange-500" />
-                <span>Game Type</span>
+                <span>Type</span>
               </Label>
               <Select value={gameType} onValueChange={setGameType}>
                 <SelectTrigger className="border-orange-200 focus:border-orange-400">
@@ -170,7 +193,7 @@ const CreateGameModal: React.FC<CreateGameModalProps> = ({ isOpen, onClose }) =>
               className="flex-1 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Create Game
+              Create Sport/Game
             </Button>
             <Button 
               type="button"

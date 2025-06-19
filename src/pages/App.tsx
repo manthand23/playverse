@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Search, Plus, Globe, Users, Trophy, MapPin, ArrowLeft } from 'lucide-react';
+import { Search, Plus, Globe, Users, Trophy, MapPin, ArrowLeft, GamepadIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import EquipmentSelector from '@/components/EquipmentSelector';
@@ -13,10 +12,17 @@ const AppPage = () => {
   const [selectedEquipment, setSelectedEquipment] = useState<string[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [recommendations, setRecommendations] = useState<any[]>([]);
+  const [showRecommendations, setShowRecommendations] = useState(false);
 
   const handleEquipmentChange = (equipment: string[]) => {
     setSelectedEquipment(equipment);
-    generateRecommendations(equipment);
+    // Don't automatically show recommendations anymore
+    setShowRecommendations(false);
+  };
+
+  const handleFindGames = () => {
+    generateRecommendations(selectedEquipment);
+    setShowRecommendations(true);
   };
 
   const generateRecommendations = (equipment: string[]) => {
@@ -61,7 +67,7 @@ const AppPage = () => {
         id: 4,
         name: "Jump Rope Boxing",
         origin: "Training Evolution",
-        equipment: ["Skipping Rope"],
+        equipment: ["Jump Rope"],
         players: "2-6",
         difficulty: "Medium",
         type: "Indoor/Outdoor",
@@ -117,14 +123,25 @@ const AppPage = () => {
                 </h1>
               </div>
             </div>
-            <Button 
-              onClick={() => setIsCreateModalOpen(true)}
-              size="sm"
-              className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
-            >
-              <Plus className="w-4 h-4 mr-1" />
-              <span className="hidden sm:inline">Create Game</span>
-            </Button>
+            <div className="flex items-center space-x-2">
+              <Button 
+                onClick={() => navigate('/my-games')}
+                variant="outline"
+                size="sm"
+                className="border-orange-200 hover:bg-orange-50"
+              >
+                <GamepadIcon className="w-4 h-4 mr-1" />
+                <span className="hidden sm:inline">My Games</span>
+              </Button>
+              <Button 
+                onClick={() => setIsCreateModalOpen(true)}
+                size="sm"
+                className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
+              >
+                <Plus className="w-4 h-4 mr-1" />
+                <span className="hidden sm:inline">Create Game</span>
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -133,10 +150,10 @@ const AppPage = () => {
         {/* Hero Section */}
         <div className="text-center space-y-3">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-            Discover Sports From Around The World
+            Discover Sports & Games From Around The World
           </h2>
           <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
-            Tell us what equipment you have, and we'll recommend amazing games from every corner of the globe
+            Tell us what equipment you have, and we'll recommend amazing sports and games from every corner of the globe
           </p>
         </div>
 
@@ -148,16 +165,29 @@ const AppPage = () => {
               <span>What equipment do you have?</span>
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-4">
             <EquipmentSelector 
               onEquipmentChange={handleEquipmentChange}
               selectedEquipment={selectedEquipment}
             />
+            
+            {selectedEquipment.length > 0 && (
+              <div className="pt-4 border-t">
+                <Button 
+                  onClick={handleFindGames}
+                  className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
+                  size="lg"
+                >
+                  <Search className="w-5 h-5 mr-2" />
+                  Find Sports & Games
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
 
         {/* Quick Stats */}
-        {selectedEquipment.length > 0 && (
+        {showRecommendations && recommendations.length > 0 && (
           <div className="grid grid-cols-3 gap-3">
             <Card className="text-center p-4 bg-gradient-to-br from-blue-500 to-blue-600 text-white">
               <div className="text-xl font-bold">{recommendations.length}</div>
@@ -175,11 +205,11 @@ const AppPage = () => {
         )}
 
         {/* Game Recommendations */}
-        {recommendations.length > 0 && (
+        {showRecommendations && recommendations.length > 0 && (
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-gray-900 flex items-center space-x-2">
               <Globe className="w-6 h-6 text-blue-600" />
-              <span>Recommended Games</span>
+              <span>Recommended Sports & Games</span>
             </h3>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
               {recommendations.map((game) => (
@@ -190,17 +220,17 @@ const AppPage = () => {
         )}
 
         {/* Empty State */}
-        {selectedEquipment.length === 0 && (
+        {!showRecommendations && (
           <Card className="text-center py-12 bg-gradient-to-br from-gray-50 to-gray-100">
             <CardContent className="space-y-4">
               <div className="w-16 h-16 bg-gradient-to-r from-orange-400 to-red-400 rounded-full flex items-center justify-center mx-auto">
                 <Search className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900">
-                Ready to discover new sports?
+                Ready to discover new sports & games?
               </h3>
               <p className="text-gray-600">
-                Select your available equipment above to get personalized game recommendations
+                Select your available equipment above and click "Find Sports & Games" to get personalized recommendations
               </p>
             </CardContent>
           </Card>
