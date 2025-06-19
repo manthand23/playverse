@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { ArrowLeft, Plus, Trophy, Search, MoreHorizontal, Edit, Trash2 } from 'lucide-react';
+import { ArrowLeft, Plus, Trophy, Search, EllipsisVertical, Edit, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -100,13 +99,9 @@ const MyGames = () => {
                   <GameCard game={game} />
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="absolute top-2 right-2 z-10 h-8 w-8 p-0 bg-white/80 hover:bg-white shadow-sm"
-                      >
-                        <MoreHorizontal className="w-4 h-4" />
-                      </Button>
+                      <button className="absolute top-2 right-2 z-10 p-1 hover:bg-white/80 rounded transition-colors">
+                        <EllipsisVertical className="w-4 h-4 text-gray-600" />
+                      </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem onClick={() => editGame(game)}>
