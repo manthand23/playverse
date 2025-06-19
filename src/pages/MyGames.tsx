@@ -1,18 +1,34 @@
 
 import React from 'react';
-import { ArrowLeft, Plus, Trophy, Search } from 'lucide-react';
+import { ArrowLeft, Plus, Trophy, Search, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 import GameCard from '@/components/GameCard';
 
 const MyGames = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   
   // Get games from localStorage (this is where created games will be stored)
   const getMyGames = () => {
     const stored = localStorage.getItem('myGames');
     return stored ? JSON.parse(stored) : [];
+  };
+
+  const deleteGame = (gameId: number) => {
+    const existingGames = getMyGames();
+    const updatedGames = existingGames.filter((game: any) => game.id !== gameId);
+    localStorage.setItem('myGames', JSON.stringify(updatedGames));
+    
+    toast({
+      title: "Game Deleted",
+      description: "The sport/game has been removed from your collection",
+    });
+    
+    // Force re-render by navigating to same route
+    window.location.reload();
   };
 
   const myGames = getMyGames();
@@ -36,7 +52,7 @@ const MyGames = () => {
                   <Trophy className="w-5 h-5 text-white" />
                 </div>
                 <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-                  My Sports & Games
+                  My Sports/Games
                 </h1>
               </div>
             </div>
@@ -57,7 +73,7 @@ const MyGames = () => {
           <div className="space-y-6">
             <div className="text-center space-y-2">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-                Your Created Sports & Games
+                Your Created Sports/Games
               </h2>
               <p className="text-base md:text-lg text-gray-600">
                 {myGames.length} game{myGames.length !== 1 ? 's' : ''} created by you
@@ -66,7 +82,17 @@ const MyGames = () => {
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
               {myGames.map((game: any) => (
-                <GameCard key={game.id} game={game} />
+                <div key={game.id} className="relative">
+                  <GameCard game={game} />
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="absolute top-2 right-2 z-10"
+                    onClick={() => deleteGame(game.id)}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
               ))}
             </div>
           </div>

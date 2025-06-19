@@ -1,103 +1,104 @@
 import React, { useState } from 'react';
-import { Search, Plus, Globe, Users, Trophy, MapPin, ArrowLeft, GamepadIcon } from 'lucide-react';
+import { Trophy, Plus, Globe, Users, MapPin, Sparkles, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import EquipmentSelector from '@/components/EquipmentSelector';
-import GameCard from '@/components/GameCard';
-import CreateGameModal from '@/components/CreateGameModal';
 import { useNavigate } from 'react-router-dom';
+import EquipmentSelector from '@/components/EquipmentSelector';
+import CreateGameModal from '@/components/CreateGameModal';
+import GameCard from '@/components/GameCard';
 
 const AppPage = () => {
   const navigate = useNavigate();
   const [selectedEquipment, setSelectedEquipment] = useState<string[]>([]);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [recommendations, setRecommendations] = useState<any[]>([]);
-  const [showRecommendations, setShowRecommendations] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showGames, setShowGames] = useState(false);
 
-  const handleEquipmentChange = (equipment: string[]) => {
-    setSelectedEquipment(equipment);
-    // Don't automatically show recommendations anymore
-    setShowRecommendations(false);
-  };
+  // Sample sports data (replace with your actual data source)
+  const sports = [
+    {
+      id: 1,
+      name: "Kabaddi",
+      origin: "India",
+      equipment: ["No Equipment"],
+      players: "7v7",
+      difficulty: "Medium",
+      type: "Outdoor",
+      description: "A contact team sport that combines elements of wrestling and tag. Players take turns raiding the opposing team's half while holding their breath.",
+      rules: "Two teams of seven players each occupy opposite sides of a court. Players take turns sending a 'raider' into the opposing half to tag opponents and return to their side. The raider must hold their breath and continuously chant 'kabaddi' while in enemy territory. Tagged players are eliminated unless they can tackle the raider. Points are scored for successful raids and tackles. The team with the most points after two 20-minute halves wins.",
+      cultural: "Originating over 4,000 years ago in Tamil Nadu, India, Kabaddi was played to develop physical strength and defensive skills. It's deeply rooted in Indian culture and has been part of Asian Games since 1990. The sport symbolizes the eternal struggle between attack and defense, requiring both individual courage and team coordination."
+    },
+    {
+      id: 2,
+      name: "Sepak Takraw",
+      origin: "Southeast Asia",
+      equipment: ["Rattan Ball", "Volleyball Net"],
+      players: "3v3",
+      difficulty: "Hard",
+      type: "Indoor/Outdoor",
+      description: "A spectacular sport combining soccer, volleyball, and martial arts. Players use feet, knees, chest, and head to maneuver a rattan ball over a net.",
+      rules: "Played on a badminton-sized court with a volleyball net at 1.52m height. Teams of three players (server, feeder, striker) use any part of their body except hands and arms to hit the ball. Each team gets three touches to return the ball over the net. Points are scored when the ball touches the opponent's court or they commit a fault. Games are played to 21 points, and matches are best of three sets.",
+      cultural: "Dating back to the 15th century, Sepak Takraw originated in Malaysia and Thailand. It was traditionally played in royal courts and village festivals. The sport represents the Southeast Asian values of agility, creativity, and artistic expression, often compared to a graceful dance combined with athletic prowess."
+    },
+    {
+      id: 3,
+      name: "Buzkashi",
+      origin: "Central Asia",
+      equipment: ["Horse", "Goat Carcass"],
+      players: "Variable",
+      difficulty: "Hard",
+      type: "Outdoor",
+      description: "A rugged and intense equestrian sport where riders compete to seize and deposit a goat carcass in a designated goal.",
+      rules: "Riders on horseback compete to grab a goat carcass, carry it around a flag, and deposit it in a designated goal. There are few rules, and the game can last for hours. It requires immense horsemanship, strength, and strategy. Often, alliances form between riders to control the carcass.",
+      cultural: "Buzkashi has been played for centuries in Central Asia, particularly in Afghanistan, Tajikistan, and Uzbekistan. It symbolizes bravery, skill, and the bond between humans and horses. The sport is often featured in celebrations and represents the nomadic heritage of the region."
+    },
+    {
+      id: 4,
+      name: "Bocce",
+      origin: "Ancient Rome",
+      equipment: ["Bocce Balls", "Pallino"],
+      players: "2v2 or 4v4",
+      difficulty: "Easy",
+      type: "Outdoor",
+      description: "A relaxing and strategic lawn game where players roll bocce balls towards a smaller target ball, known as the pallino.",
+      rules: "One team throws the pallino onto the court. Teams take turns rolling or tossing their bocce balls closest to the pallino. The team with the ball nearest to the pallino scores points. Games are typically played to 12 or 13 points. It's a game of precision and tactics, suitable for all ages.",
+      cultural: "Bocce dates back to the Roman Empire and has been enjoyed throughout Italy for centuries. It represents social connection, friendly competition, and the simple pleasures of life. The game is often played in parks and public spaces, bringing communities together."
+    },
+    {
+      id: 5,
+      name: "Jai Alai",
+      origin: "Basque Country",
+      equipment: ["Cesta", "Pelota"],
+      players: "1v1 or 2v2",
+      difficulty: "Hard",
+      type: "Indoor",
+      description: "A fast-paced and thrilling sport where players use a curved, elongated basket (cesta) to hurl a hard ball (pelota) against a wall.",
+      rules: "Players use the cesta to catch and throw the pelota against a front wall. The ball must be played in one continuous motion. Points are scored when the opposing player fails to catch the ball or makes an error. Games are played to a set number of points. It's known as the world's fastest ball game.",
+      cultural: "Jai Alai originated in the Basque Country of Spain and France. It represents the region's unique cultural identity, athleticism, and passion. The sport has spread to other parts of the world, but remains deeply connected to its Basque roots."
+    }
+  ];
 
   const handleFindGames = () => {
-    generateRecommendations(selectedEquipment);
-    setShowRecommendations(true);
+    if (selectedEquipment.length === 0) {
+      return;
+    }
+    setShowGames(true);
   };
 
-  const generateRecommendations = (equipment: string[]) => {
-    const allGames = [
-      {
-        id: 1,
-        name: "Kabaddi",
-        origin: "India",
-        equipment: ["None"],
-        players: "7v7",
-        difficulty: "Medium",
-        type: "Outdoor",
-        description: "Ancient contact sport combining strength, strategy, and breath control where raiders must tag opponents and return safely",
-        rules: "SETUP: Create two halves of a court (13x10 meters each). Divide players into two teams of 7.\n\nGAMEPLAY:\n1. Teams alternate sending a 'raider' to the opponent's half\n2. The raider must chant 'kabaddi-kabaddi' continuously in one breath\n3. Raider tries to tag as many defenders as possible\n4. Tagged defenders are 'out' if the raider returns safely to their half\n5. If defenders tackle the raider before they return, the raider is out\n6. Game consists of two 20-minute halves\n7. Team with most points wins",
-        cultural: "Dating back over 4,000 years to ancient India, Kabaddi represents the warrior spirit and tactical prowess valued in Indian culture. Originally practiced by soldiers to develop combat skills, it became the national sport of Bangladesh and is deeply rooted in South Asian tradition. The word 'kabaddi' comes from the Tamil word 'kai-pidi' meaning 'holding hands.' Today it's played professionally across Asia and represents the perfect blend of individual skill and team strategy that defines many traditional Indian sports."
-      },
-      {
-        id: 2,
-        name: "Sepak Takraw",
-        origin: "Thailand/Malaysia",
-        equipment: ["Ball"],
-        players: "3v3",
-        difficulty: "Hard",
-        type: "Outdoor",
-        description: "Spectacular acrobatic sport combining soccer and volleyball using feet, knees, chest, and head to keep a rattan ball airborne",
-        rules: "SETUP: Court is 13.4x6.1 meters with a 1.52m high net. Use a rattan or synthetic ball.\n\nGAMEPLAY:\n1. Teams of 3 players each (spiker, feeder, server)\n2. Serve the ball over the net using feet only\n3. Maximum 3 touches per side before sending over net\n4. No hands or arms allowed - use feet, knees, chest, head\n5. Players can use any part of body except hands/arms\n6. Points scored when ball hits opponent's court or they fault\n7. Games played to 21 points (must win by 2)\n8. Best of 3 sets wins the match",
-        cultural: "Known as the 'kick volleyball,' Sepak Takraw originated 500 years ago in the royal courts of Malaysia and Thailand. The sport showcases the incredible athletic artistry and flexibility valued in Southeast Asian martial arts traditions. 'Sepak' means 'kick' in Malay, while 'takraw' means 'ball' in Thai. Originally played in a circle for fun, it evolved into the competitive net sport we see today. The game represents the harmony between grace and power that is central to Southeast Asian physical culture, and watching players perform bicycle kicks and aerial maneuvers is truly mesmerizing."
-      },
-      {
-        id: 3,
-        name: "Cone Soccer",
-        origin: "Modern Adaptation",
-        equipment: ["Soccer Ball", "Cones"],
-        players: "2-8",
-        difficulty: "Easy",
-        type: "Outdoor",
-        description: "Fast-paced defensive game where players protect their cone goals while attacking others in a chaotic free-for-all",
-        rules: "SETUP: Place one cone per player in a large circle (20-30 meters diameter). Each player starts next to their cone.\n\nGAMEPLAY:\n1. Use one soccer ball for all players\n2. Each player defends their own cone while trying to knock over others'\n3. Players can only use feet to move the ball\n4. When your cone is knocked over, you're temporarily out\n5. Last player with cone standing wins the round\n6. Knocked-out players can return after 30 seconds\n7. Play multiple rounds, first to 3 wins overall\n8. No goalkeeping - must stay mobile and attack/defend dynamically",
-        cultural: "A brilliant modern adaptation of traditional soccer that emphasizes the sport's core values of quick thinking, spatial awareness, and ball control. This game strips away complex rules to focus on pure soccer fundamentals while adding a strategic twist. It represents the evolution of street soccer and playground games, where creativity and adaptability matter more than formal structure. Popular in youth soccer programs worldwide, it teaches players to think 360 degrees and develops the kind of situational awareness that makes great soccer players."
-      },
-      {
-        id: 4,
-        name: "Jump Rope Boxing",
-        origin: "Training Evolution",
-        equipment: ["Jump Rope"],
-        players: "2-6",
-        difficulty: "Medium",
-        type: "Indoor/Outdoor",
-        description: "High-intensity cardio game combining jump rope skills with defensive strategy and rhythm coordination",
-        rules: "SETUP: Each player needs a jump rope. Create a circle 5 meters in diameter.\n\nGAMEPLAY:\n1. All players start jumping rope simultaneously in the circle\n2. While jumping, players try to tangle or step on opponents' ropes\n3. Must maintain your own jumping rhythm throughout\n4. If your rope stops or you stop jumping, you're out for 30 seconds\n5. If you successfully tangle someone's rope, they sit out\n6. Last person jumping wins the round\n7. Play best of 5 rounds\n8. Advanced rule: Add footwork patterns or specific jumping styles",
-        cultural: "Evolved from traditional boxing training routines, this game emphasizes the rhythm, coordination, and mental focus that are central to combat sports training. Jump rope has been used by fighters for over a century to develop footwork, timing, and cardiovascular endurance. This playful adaptation maintains those training benefits while adding competitive elements that make it accessible to everyone. It represents how traditional athletic training methods can be transformed into engaging games that preserve the physical and mental benefits of the original practice."
-      },
-      {
-        id: 5,
-        name: "Netball Knockout",
-        origin: "Commonwealth Nations",
-        equipment: ["Basketball Hoop", "Ball"],
-        players: "4-10",
-        difficulty: "Medium",
-        type: "Outdoor",
-        description: "Fast-paced shooting game combining netball accuracy with elimination-style competition",
-        rules: "SETUP: Use basketball hoop or netball post. Players form line behind shooting mark (3 meters from hoop).\n\nGAMEPLAY:\n1. First player shoots, if they score they go to back of line\n2. If they miss, they become 'runner' and must retrieve ball\n3. While runner gets ball, next player shoots immediately\n4. If next player scores before runner returns ball to line, runner is out\n5. If runner returns ball before next shot is made, they rejoin line\n6. Continue until only 2 players remain\n7. Final two players take alternating shots until one misses\n8. Winner stays on for next round",
-        cultural: "Netball was invented in 1891 and became hugely popular across the British Commonwealth, particularly among women. This knockout variation captures the precision and quick decision-making that made netball a cornerstone sport in countries like Australia, New Zealand, and the UK. The game emphasizes the shooting accuracy and spatial awareness that are fundamental to netball while adding the excitement of elimination gameplay. It represents how traditional Commonwealth sports can be adapted to create inclusive, competitive games for mixed groups."
+  const getFilteredSports = () => {
+    if (selectedEquipment.length === 0) return [];
+    
+    return sports.filter(sport => {
+      if (selectedEquipment.includes("No Equipment")) {
+        return sport.equipment.includes("No Equipment");
       }
-    ];
-
-    const filtered = allGames.filter(game => {
-      if (equipment.length === 0) return true;
-      return equipment.some(equip => 
-        game.equipment.includes(equip) || game.equipment.includes("None")
+      
+      return sport.equipment.some(equipment => 
+        selectedEquipment.includes(equipment)
       );
     });
-
-    setRecommendations(filtered);
   };
+
+  const filteredSports = getFilteredSports();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
@@ -105,141 +106,118 @@ const AppPage = () => {
       <header className="bg-white border-b border-purple-200 sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <Button 
-                variant="ghost" 
-                size="sm"
-                onClick={() => navigate('/')}
-                className="md:hidden"
-              >
-                <ArrowLeft className="w-4 h-4" />
-              </Button>
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
-                  <Trophy className="w-5 h-5 text-white" />
-                </div>
-                <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-                  Playverse
-                </h1>
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
+                <Globe className="w-5 h-5 text-white" />
               </div>
+              <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                Discover Sports/Games From Around The World
+              </h1>
             </div>
             <div className="flex items-center space-x-2">
               <Button 
-                onClick={() => navigate('/my-games')}
                 variant="outline"
                 size="sm"
+                onClick={() => navigate('/my-games')}
                 className="border-orange-200 hover:bg-orange-50"
               >
-                <GamepadIcon className="w-4 h-4 mr-1" />
+                <Trophy className="w-4 h-4 mr-1" />
                 <span className="hidden sm:inline">My Games</span>
               </Button>
               <Button 
-                onClick={() => setIsCreateModalOpen(true)}
+                onClick={() => setShowCreateModal(true)}
                 size="sm"
                 className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
               >
                 <Plus className="w-4 h-4 mr-1" />
-                <span className="hidden sm:inline">Create Game</span>
+                <span className="hidden sm:inline">Create</span>
               </Button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-6 space-y-6">
-        {/* Hero Section */}
-        <div className="text-center space-y-3">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-            Discover Sports & Games From Around The World
-          </h2>
-          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
-            Tell us what equipment you have, and we'll recommend amazing sports and games from every corner of the globe
-          </p>
-        </div>
-
-        {/* Equipment Selector */}
-        <Card className="border-2 border-orange-200 shadow-lg bg-white">
-          <CardHeader className="pb-4">
-            <CardTitle className="flex items-center space-x-2 text-lg">
-              <Search className="w-5 h-5 text-orange-600" />
-              <span>What equipment do you have?</span>
+      <div className="container mx-auto px-4 py-6 space-y-8">
+        {/* Equipment Selection */}
+        <Card className="border-2 border-orange-200 bg-white/80 backdrop-blur-sm">
+          <CardHeader className="text-center pb-4">
+            <CardTitle className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center justify-center space-x-2">
+              <Sparkles className="w-7 h-7 text-yellow-500" />
+              <span>Find Your Perfect Sport/Game</span>
             </CardTitle>
+            <p className="text-base md:text-lg text-gray-600 mt-2">
+              Ready to discover new sports/games?<br />
+              Select your available equipment above and click "Find Sports/Games" to get personalized recommendations
+            </p>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
             <EquipmentSelector 
-              onEquipmentChange={handleEquipmentChange}
+              onEquipmentChange={setSelectedEquipment}
               selectedEquipment={selectedEquipment}
             />
             
-            {selectedEquipment.length > 0 && (
-              <div className="pt-4 border-t">
-                <Button 
-                  onClick={handleFindGames}
-                  className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
-                  size="lg"
-                >
-                  <Search className="w-5 h-5 mr-2" />
-                  Find Sports & Games
-                </Button>
-              </div>
-            )}
+            <div className="text-center pt-4">
+              <Button 
+                onClick={handleFindGames}
+                disabled={selectedEquipment.length === 0}
+                className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-3 px-8 text-lg"
+              >
+                <Star className="w-5 h-5 mr-2" />
+                Find Sports/Games
+              </Button>
+            </div>
           </CardContent>
         </Card>
 
-        {/* Quick Stats */}
-        {showRecommendations && recommendations.length > 0 && (
-          <div className="grid grid-cols-3 gap-3">
-            <Card className="text-center p-4 bg-gradient-to-br from-blue-500 to-blue-600 text-white">
-              <div className="text-xl font-bold">{recommendations.length}</div>
-              <div className="text-sm opacity-90">Games Found</div>
-            </Card>
-            <Card className="text-center p-4 bg-gradient-to-br from-green-500 to-green-600 text-white">
-              <div className="text-xl font-bold">{recommendations.filter(g => g.type === "Outdoor" || g.type === "Indoor/Outdoor").length}</div>
-              <div className="text-sm opacity-90">Outdoor</div>
-            </Card>
-            <Card className="text-center p-4 bg-gradient-to-br from-purple-500 to-purple-600 text-white">
-              <div className="text-xl font-bold">{recommendations.filter(g => g.type === "Indoor" || g.type === "Indoor/Outdoor").length}</div>
-              <div className="text-sm opacity-90">Indoor</div>
-            </Card>
-          </div>
-        )}
+        {/* Results */}
+        {showGames && (
+          <div className="space-y-6">
+            {filteredSports.length > 0 ? (
+              <>
+                <div className="text-center space-y-2">
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                    Perfect Matches Found!
+                  </h2>
+                  <p className="text-base md:text-lg text-gray-600">
+                    {filteredSports.length} sport{filteredSports.length !== 1 ? 's' : ''} you can play with your equipment
+                  </p>
+                </div>
 
-        {/* Game Recommendations */}
-        {showRecommendations && recommendations.length > 0 && (
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold text-gray-900 flex items-center space-x-2">
-              <Globe className="w-6 h-6 text-blue-600" />
-              <span>Recommended Sports & Games</span>
-            </h3>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-              {recommendations.map((game) => (
-                <GameCard key={game.id} game={game} />
-              ))}
-            </div>
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                  {filteredSports.map((sport) => (
+                    <GameCard key={sport.id} game={sport} />
+                  ))}
+                </div>
+              </>
+            ) : (
+              <Card className="text-center py-12 bg-gradient-to-br from-gray-50 to-gray-100 max-w-md mx-auto">
+                <CardContent className="space-y-4">
+                  <div className="w-16 h-16 bg-gradient-to-r from-orange-400 to-red-400 rounded-full flex items-center justify-center mx-auto">
+                    <Globe className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900">
+                    No matches found
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    Try selecting different equipment or create your own sport/game!
+                  </p>
+                  <Button 
+                    onClick={() => setShowCreateModal(true)}
+                    className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Create Custom Game
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
           </div>
-        )}
-
-        {/* Empty State */}
-        {!showRecommendations && (
-          <Card className="text-center py-12 bg-gradient-to-br from-gray-50 to-gray-100">
-            <CardContent className="space-y-4">
-              <div className="w-16 h-16 bg-gradient-to-r from-orange-400 to-red-400 rounded-full flex items-center justify-center mx-auto">
-                <Search className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900">
-                Ready to discover new sports & games?
-              </h3>
-              <p className="text-gray-600">
-                Select your available equipment above and click "Find Sports & Games" to get personalized recommendations
-              </p>
-            </CardContent>
-          </Card>
         )}
       </div>
 
       <CreateGameModal 
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
       />
     </div>
   );
